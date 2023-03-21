@@ -13,6 +13,8 @@ import {
   loadCSS,
 } from './lib-franklin.js';
 
+import integrateMartech from './third-party.js';
+
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
@@ -90,6 +92,14 @@ export function addFavIcon(href) {
   }
 }
 
+function initPartytown() {
+  window.partytown = {
+    lib: '/scripts/partytown/',
+    forward: ['dataLayer.push'],
+  };
+  import('./partytown/partytown.js');
+}
+
 /**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
@@ -110,6 +120,9 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+
+  integrateMartech();
+  initPartytown();
 }
 
 /**
